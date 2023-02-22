@@ -51,5 +51,6 @@ class CloneProgress(RemoteProgress):
             self.pbar.stop()
             self.pbar.wait()
         else:
-            self.pbar.prefix = message
+            if message:
+                self.pbar.prefix = f"{message} :"
             self.pbar.iter()
