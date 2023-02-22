@@ -59,7 +59,7 @@ class LibriVoxDansk(Base):
             if verbose and not quiet:
                 print("Cloned repo")
             os.makedirs(target, exist_ok=True)
-            if verbose:
+            if verbose and not quiet:
                 print(f"Created folder '{target}'")
 
             move(join(tmpdirname, "all.csv"), f"{target}/all.csv")
