@@ -2,7 +2,7 @@
 Package for downloading and loading the rifs datasets
 """
 
-from librispeech import LibriSpeechDansk
+from rifsdatasets.librispeech import LibriSpeechDansk
 
 __version__ = '0.0.1'
 
