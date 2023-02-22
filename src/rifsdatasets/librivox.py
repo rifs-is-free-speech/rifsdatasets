@@ -47,6 +47,7 @@ class LibriVoxDansk(Base):
             os.makedirs(target, exist_ok=True)
             if verbose:
                 print(f"Created folder '{target}'")
+
             move(join(tmpdirname, "all.csv"), f"{target}/all.csv")
             if verbose:
                 print(f"Moved all.csv to '{target}'")
