@@ -1,16 +1,28 @@
 """utils for rifsdatasets"""
 
 from git import RemoteProgress
-from tqdm import tqdm
+from awesome_progress_bar import ProgressBar
 
 
 class CloneProgress(RemoteProgress):
     """Progress bar for cloning a git repository."""
 
-    def __init__(self):
-        """Initialize progress bar."""
+    def __init__(self, total):
+        """Initialize progress bar.
+
+        Parameters
+        ----------
+        total : int
+            Total number of operations.
+
+        Returns
+        -------
+        None
+        """
         super().__init__()
-        self.pbar = tqdm()
+        self.pbar = ProgressBar(
+            1, prefix="Downloading", suffix="of files", use_eta=True, spinner_type="db"
+        )
 
     def update(self, op_code, cur_count, max_count=None, message=""):
         """
@@ -29,5 +41,4 @@ class CloneProgress(RemoteProgress):
         """
 
         self.pbar.total = max_count
-        self.pbar.n = cur_count
-        self.pbar.refresh()
+        self.pbar()
