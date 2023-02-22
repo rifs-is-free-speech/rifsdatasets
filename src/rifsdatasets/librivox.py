@@ -43,8 +43,8 @@ class LibriVoxDansk(Base):
             if not quiet:
                 print(
                     f"Skipping download because the {target} already exists.",
-                    "Review and delete the folder if you want to download again.", 
-                    sep="\n"
+                    "Review and delete the folder if you want to download again.",
+                    sep="\n",
                 )
             return
 
