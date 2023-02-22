@@ -12,7 +12,7 @@ class Base(ABC):
 
     @staticmethod
     @abstractmethod
-    def download(target_folder: str, verbose: bool = False):
+    def download(target_folder: str, verbose: bool = False, quiet: bool = False):
         """
         Download the dataset to the specified destination.
 
@@ -21,6 +21,8 @@ class Base(ABC):
         target_folder: str
             The destination folder to download the dataset to.
         verbose: bool
+            Whether to print the download progress.
+        quiet: bool
             Whether to print the download progress.
         """
         ...
