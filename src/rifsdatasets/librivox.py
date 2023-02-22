@@ -47,12 +47,12 @@ class LibriVoxDansk(Base):
             os.makedirs(target, exist_ok=True)
             if verbose:
                 print(f"Created folder '{target}'")
-            move(f"{tmpdirname}/LibriVoxDansk/all.csv", f"{target}/all.csv")
+            move(join(tmpdirname, "all.csv"), f"{target}/all.csv")
             if verbose:
                 print(f"Moved all.csv to '{target}'")
-            move(f"{tmpdirname}/LibriVoxDansk/text", f"{target}/text")
+            move(join(tmpdirname, "text"), f"{target}/text")
             if verbose:
                 print(f"Moved text/ to '{target}'")
-            move(f"{tmpdirname}/LibriVoxDansk/audio", f"{target}/audio")
+            move(join(tmpdirname, "audio"), f"{target}/audio")
             if verbose:
                 print(f"Moved audio/ to '{target}'")
