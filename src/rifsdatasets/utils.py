@@ -2,18 +2,18 @@
 
 from git import RemoteProgress
 from awesome_progress_bar import ProgressBar
+from time import sleep
 
 
 class CloneProgress(RemoteProgress):
     """Progress bar for cloning a git repository."""
 
-    def __init__(self, total):
+    def __init__(self):
         """Initialize progress bar.
 
         Parameters
         ----------
-        total : int
-            Total number of operations.
+        None
 
         Returns
         -------
@@ -21,7 +21,11 @@ class CloneProgress(RemoteProgress):
         """
         super().__init__()
         self.pbar = ProgressBar(
-            1, prefix="Downloading", suffix="of files", use_eta=True, spinner_type="db"
+            1,
+            prefix="Downloading",
+            suffix="of files",
+            use_eta=True,
+            spinner_type="db",
         )
 
     def update(self, op_code, cur_count, max_count=None, message=""):
@@ -39,6 +43,13 @@ class CloneProgress(RemoteProgress):
         message : str
             Message.
         """
-
-        self.pbar.total = max_count
-        self.pbar()
+        if self.pbar.total == 1:
+            self.pbar.total = int(max_count)
+        if cur_count == max_count:
+            self.pbar._iteration = int(max_count)
+            sleep(0.125)
+            self.pbar.stop()
+            self.pbar.wait()
+        else:
+            self.pbar.self.prefix = message
+            self.pbar.iter()
