@@ -52,8 +52,8 @@ class LibriVoxDansk(Base):
             if verbose:
                 print("Created temporary directory", tmpdirname)
             Repo.clone_from(
-                project_url="git@github.com:rifs-is-free-speech/LibriVoxDansk.git",
-                repo_dir=tmpdirname,
+                url="git@github.com:rifs-is-free-speech/LibriVoxDansk.git",
+                to_path=tmpdirname,
                 progress=None if quiet else CloneProgress(),
             )
             if verbose:
