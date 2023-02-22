@@ -42,7 +42,9 @@ class LibriVoxDansk(Base):
         if os.path.exists(target_folder):
             if not quiet:
                 print(
-                    f"Skipping download because the {target} already exists. Review and delete the folder if you want to download again."  # noqa: E501
+                    f"Skipping download because the {target} already exists.",
+                    "Review and delete the folder if you want to download again.", 
+                    sep="\n"
                 )
             return
 
