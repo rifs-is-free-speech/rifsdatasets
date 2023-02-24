@@ -4,6 +4,8 @@ from git import RemoteProgress
 from awesome_progress_bar import ProgressBar
 from time import sleep
 
+import pydub
+
 
 class CloneProgress(RemoteProgress):
     """Progress bar for cloning a git repository."""
@@ -54,3 +56,26 @@ class CloneProgress(RemoteProgress):
             if message:
                 self.pbar.prefix = f"{message} "
             self.pbar.iter()
+
+
+def convert_mp3_to_wav(
+    src: str,
+    dst: str,
+):
+    """
+    Convert mp3 to wav.
+
+    Parameters
+    ----------
+    src: str
+        Path to source mp3 file with extension
+    dst: str
+        Path to destination wav file with extension
+
+
+    Returns
+    -------
+    None
+    """
+    sound = pydub.AudioSegment.from_mp3(src)
+    sound.export(dst, format="wav")

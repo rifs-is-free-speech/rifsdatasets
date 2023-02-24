@@ -21,8 +21,8 @@ class Base(ABC):
         target_folder: str
             The destination folder to download the dataset to.
         verbose: bool
-            Whether to print the download progress.
+            Whether to print the download progress with steps.
         quiet: bool
-            Whether to print the download progress.
+            Prints nothing.
         """
         ...
