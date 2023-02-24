@@ -68,8 +68,8 @@ class LibriVoxDansk(Base):
                 if verbose and not quiet:
                     print(f"Converting {row['id']}")
                 convert_mp3_to_wav(
-                    src=join(tmpdirname, "audio", row["id"]),
-                    dst=join(tmpdirname, "audio_wav", row["id"] + ".wav"),
+                    src=join(tmpdirname, "audio", f"{row['id']}.mp3"),
+                    dst=join(tmpdirname, "audio_wav", f"{row['id']}.wav"),
                 )
 
             os.makedirs(target, exist_ok=True)
