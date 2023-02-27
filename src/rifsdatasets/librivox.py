@@ -41,7 +41,7 @@ class LibriVoxDansk(Base):
         if verbose and not quiet:
             print(f"Downloading LibriVoxDansk to '{target_folder}'")
         if os.path.exists(target_folder):
-            if not quiet:
+            if verbose and not quiet:
                 print(
                     f"Skipping download because {target} already exists.",
                     "Review and delete the folder if you want to download again.",
