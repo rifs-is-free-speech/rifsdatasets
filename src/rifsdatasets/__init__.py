@@ -6,6 +6,6 @@ from rifsdatasets.librivox import LibriVoxDansk
 
 __version__ = "0.0.1"
 
-datasets = {"LibriVoxDansk": LibriVoxDansk}
+all_datasets = {"LibriVoxDansk": LibriVoxDansk}
 
 __all__ = ["datasets"]
