@@ -40,7 +40,7 @@ class LibriVoxDansk(Base):
         target = join(target_folder, "LibriVoxDansk")
         if verbose and not quiet:
             print(f"Downloading LibriVoxDansk to '{target_folder}'")
-        if os.path.exists(target_folder):
+        if os.path.exists(target_folder, "LibriVoxDansk"):
             if verbose and not quiet:
                 print(
                     f"Skipping download because {target} already exists.",
