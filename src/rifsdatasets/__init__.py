@@ -8,4 +8,4 @@ __version__ = "0.0.1"
 
 all_datasets = {"LibriVoxDansk": LibriVoxDansk}
 
-__all__ = ["datasets"]
+__all__ = ["all_datasets"]
