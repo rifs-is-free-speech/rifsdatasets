@@ -58,7 +58,7 @@ class LibriVoxDansk(Base):
                 progress=None if quiet else CloneProgress(),
             )
             if verbose and not quiet:
-                print("Cloned repo")
+                print("Download complete!")
                 print("Converting mp3 to wav")
 
             # Convert mp3 files to wav

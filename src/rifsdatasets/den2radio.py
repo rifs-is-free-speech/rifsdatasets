@@ -42,16 +42,18 @@ year
 2023     95
 """
 
-from tempfile import TemporaryDirectory
+import os
+import requests
+import pandas as pd
 
 from rifsdatasets.base import Base
 from rifsdatasets.utils import CloneProgress, convert_mp3_to_wav
+
+from tempfile import TemporaryDirectory
 from git import Repo
 from shutil import move
-
-import os
+from urllib.parse import unquote
 from os.path import join
-import pandas as pd
 
 
 class Den2Radio(Base):
@@ -84,11 +86,13 @@ class Den2Radio(Base):
         if os.path.exists(target):
             if verbose and not quiet:
                 print(
-                    f"Skipping download because {target} already exists.",
+                    f"Continuing download because {target} already exists.",
                     "Review and delete the folder if you want to download again.",
                     sep="\n",
                 )
-            return
+        else:
+            os.mkdir(target)
+            os.mkdir(join(target, "audio"))
 
         with TemporaryDirectory() as tmpdirname:
             if verbose and not quiet:
@@ -98,40 +102,52 @@ class Den2Radio(Base):
                 to_path=tmpdirname,
                 progress=None if quiet else CloneProgress(),
             )
-            if verbose and not quiet:
-                print("Cloned repo")
+            source = join(tmpdirname, "audio")
+            os.mkdir(source)
 
             df = pd.read_csv(join(tmpdirname, "all.csv"))
-            print(df)
-            move(join(tmpdirname, "all.csv"), target)
+            move(join(tmpdirname, "all.csv"), join(target, "all.csv"))
 
-            if verbose and not quiet:
-                print("Converting mp3 to wav")
-
-            convert_mp3_to_wav
-            """
-            # Convert mp3 files to wav
-            os.mkdir(join(tmpdirname, "audio_wav"))
-            all_csv = pd.read_csv(join(tmpdirname, "all.csv"))
-            for i, row in all_csv.iterrows():
+            for i, row in df.iterrows():
                 if verbose and not quiet:
-                    print(f"Converting {row['id']}")
-                convert_mp3_to_wav(
-                    src=join(tmpdirname, "audio", f"{row['id']}.mp3"),
-                    dst=join(tmpdirname, "audio_wav", f"{row['id']}.wav"),
-                )
+                    print(f"\nProcessing episode {i+1}/{len(df)}")
+                elif not quiet:
+                    print(f"\rProcessing episode {i+1}/{len(df)}", end="")
 
-            os.makedirs(target, exist_ok=True)
-            if verbose and not quiet:
-                print(f"Created folder '{target}'")
-            move(join(tmpdirname, "all.csv"), f"{target}/all.csv")
-            if verbose and not quiet:
-                print(f"Moved all.csv to '{target}'")
-            move(join(tmpdirname, "text"), f"{target}/text")
-            if verbose and not quiet:
-                print(f"Moved text/ to '{target}'")
-            move(join(tmpdirname, "audio_wav"), f"{target}/audio")
-            if verbose and not quiet:
-                print(f"Moved audio/ to '{target}'")
+                if not os.path.exists(join(source, str(row.year))):
+                    os.mkdir(join(source, str(row.year)))
+                if not os.path.exists(join(target, "audio", str(row.year))):
+                    os.mkdir(join(target, "audio", str(row.year)))
 
-            """
+                for idx, link in enumerate(eval(row.download_links)):
+                    new_link = unquote(link)
+                    link = link.replace(
+                        "http://den2radio.dk/assets/download.php?file=", ""
+                    )
+                    filename = (
+                        new_link.split("/")[-1]
+                        .replace(" ", "_")
+                        .replace("_-", "")
+                        .replace("__", "_")
+                    )
+                    dist = join(
+                        target, "audio", str(row.year), filename.replace(".mp3", ".wav")
+                    )
+                    if os.path.exists(dist):
+                        if verbose and not quiet:
+                            print(f"Skipping {filename} because it already exists.")
+                        continue
+
+                    if verbose and not quiet:
+                        print(f"Downloading mp3: {filename}")
+
+                    mp3 = requests.get(link)
+                    with open(join(source, str(row.year), filename), "wb") as f:
+                        f.write(mp3.content)
+
+                    if verbose and not quiet:
+                        print(f"Converting mp3 to wav and moving to {dist}")
+                    convert_mp3_to_wav(
+                        join(source, str(row.year), filename),
+                        dist,
+                    )
