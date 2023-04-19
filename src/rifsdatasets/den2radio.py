@@ -43,6 +43,7 @@ year
 """
 
 import os
+import pydub
 import requests
 import pandas as pd
 
@@ -147,7 +148,13 @@ class Den2Radio(Base):
 
                     if verbose and not quiet:
                         print(f"Converting mp3 to wav and moving to {dist}")
-                    convert_mp3_to_wav(
-                        join(source, str(row.year), filename),
-                        dist,
-                    )
+                    try:
+                        convert_mp3_to_wav(
+                            join(source, str(row.year), filename),
+                            dist,
+                        )
+                    except pydub.exceptions.CouldntDecodeError:
+                        print(f"Could not decode {filename} at {link}")
+                        with open(join(target, "errors.txt"), "a+") as f:
+                            f.write(link + "\n")
+                        continue
