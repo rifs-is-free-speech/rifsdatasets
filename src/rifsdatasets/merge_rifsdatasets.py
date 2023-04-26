@@ -6,7 +6,14 @@ import subprocess as sp
 import pandas as pd
 import os
 
-def merge_rifsdatasets(src_dataset: List[str], trg_dataset: str, specify_dirs: List[str], verbose: bool = False, quiet: bool = False):
+
+def merge_rifsdatasets(
+    src_dataset: List[str],
+    trg_dataset: str,
+    specify_dirs: List[str],
+    verbose: bool = False,
+    quiet: bool = False,
+):
     """
     Merge two or more datasets.
 

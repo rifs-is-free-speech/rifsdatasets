@@ -6,7 +6,7 @@ from rifsdatasets.librivox import LibriVoxDansk
 from rifsdatasets.den2radio import Den2Radio
 from rifsdatasets.merge_rifsdatasets import merge_rifsdatasets
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 all_datasets = {"LibriVoxDansk": LibriVoxDansk, "Den2Radio": Den2Radio}
 
