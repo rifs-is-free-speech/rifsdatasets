@@ -50,10 +50,20 @@ def merge_rifsdatasets(
 
         try:
             csv = pd.read_csv(os.path.join(dataset, "all.csv"))
-            csv["id"] = csv["id"].apply(lambda x: os.path.join(dataset_name, x))
-            all_csv.append(csv)
+            if "id" in csv.columns:
+                csv["id"] = csv["id"].apply(lambda x: os.path.join(dataset_name, x))
+                all_csv.append(csv)
+            else:
+                if verbose and not quiet:
+                    print(
+                        f"Dataset {dataset} has no 'id' column. Will only merge files but not csv."
+                    )
         except FileNotFoundError:
-            pass
+            if verbose and not quiet:
+                print(
+                    f"Dataset {dataset} has no 'all.csv'. Will only merge files but not csv."
+                )
+
         target = os.path.join(trg_dataset, dataset_name)
         if specify_dirs:
             cmd = f"cp -r {' '.join([os.path.join(dataset, d) for d in specify_dirs])} {target}"
