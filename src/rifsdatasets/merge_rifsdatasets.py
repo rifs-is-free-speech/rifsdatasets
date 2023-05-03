@@ -40,24 +40,28 @@ def merge_rifsdatasets(
     all_csv = []
 
     for dataset in src_dataset:
+        dataset_name = os.path.basename(dataset)
+        os.makedirs(os.path.join(trg_dataset, dataset_name), exist_ok=True)
+
         if verbose and not quiet:
             print(f"Merging {dataset} into {trg_dataset}")
 
         try:
             csv = pd.read_csv(os.path.join(dataset, "all.csv"))
+            csv["id"] = csv["id"].apply(lambda x: os.path.join(dataset_name, x))
             all_csv.append(csv)
         except FileNotFoundError:
             pass
-
+        target = os.path.join(trg_dataset, dataset_name)
         if specify_dirs:
-            cmd = f"cp -r {' '.join([os.path.join(dataset, d) for d in specify_dirs])} {trg_dataset}"
+            cmd = f"cp -r {' '.join([os.path.join(dataset, d) for d in specify_dirs])} {target}"
         else:
-            cmd = f"cp -r {dataset}/* {trg_dataset}"
+            cmd = f"cp -r {dataset}/* {target}"
 
         sp.Popen(cmd, shell=True).wait()
 
         if not quiet:
-            print(f"Finished merging {dataset} into {trg_dataset}")
+            print(f"Finished merging {dataset} into {target}")
 
     if len(all_csv) > 0:
         all_csv = pd.concat(all_csv, ignore_index=True)

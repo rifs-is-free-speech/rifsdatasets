@@ -7,7 +7,7 @@ from rifsdatasets.den2radio import Den2Radio
 from rifsdatasets.forskerzonen import Forskerzonen
 from rifsdatasets.merge_rifsdatasets import merge_rifsdatasets
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 
 all_datasets = {
     "LibriVoxDansk": LibriVoxDansk,
