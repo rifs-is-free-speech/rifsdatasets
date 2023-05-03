@@ -37,13 +37,15 @@ def merge_rifsdatasets(
     import pandas as pd
     import os
 
+    if not specify_dirs:
+        specify_dirs = ["audio", "text", "alignments"]
+
     os.makedirs(trg_dataset, exist_ok=True)
 
     all_csv = []
 
     for dataset in src_dataset:
-        dataset_name = os.path.basename(dataset)
-        os.makedirs(os.path.join(trg_dataset, dataset_name), exist_ok=True)
+        dataset_name = os.path.basename(os.path.normpath(dataset))
 
         if verbose and not quiet:
             print(f"Merging {dataset} into {trg_dataset}")
@@ -64,16 +66,21 @@ def merge_rifsdatasets(
                     f"Dataset {dataset} has no 'all.csv'. Will only merge files but not csv."
                 )
 
-        target = os.path.join(trg_dataset, dataset_name)
-        if specify_dirs:
-            cmd = f"cp -r {' '.join([os.path.join(dataset, d) for d in specify_dirs])} {target}"
-        else:
-            cmd = f"cp -r {dataset}/* {target}"
-
-        sp.Popen(cmd, shell=True).wait()
+        for dir in specify_dirs:
+            dir_target = os.path.join(trg_dataset, dir, dataset_name)
+            if not os.path.exists(os.path.join(dataset, dir)):
+                continue
+            os.makedirs(dir_target, exist_ok=True)
+            if verbose and not quiet:
+                print(f"Copying {dir} from '{dataset}' to '{trg_dataset}'")
+            sp.run(
+                f"cp -r {os.path.join(dataset, dir)} {dir_target}",
+                shell=True,
+                check=True,
+            )
 
         if not quiet:
-            print(f"Finished merging {dataset} into {target}")
+            print(f"Finished merging '{dataset}' into '{trg_dataset}'\n")
 
     if len(all_csv) > 0:
         all_csv = pd.concat(all_csv, ignore_index=True)
