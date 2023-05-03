@@ -42,19 +42,7 @@ year
 2023     95
 """
 
-import os
-import pydub
-import requests
-import pandas as pd
-
 from rifsdatasets.base import Base
-from rifsdatasets.utils import CloneProgress, convert_mp3_to_wav
-
-from tempfile import TemporaryDirectory
-from git import Repo
-from shutil import move
-from urllib.parse import unquote
-from os.path import join
 
 
 class Den2Radio(Base):
@@ -81,6 +69,18 @@ class Den2Radio(Base):
         None
 
         """
+        import os
+        import pydub
+        import requests
+        import pandas as pd
+
+        from rifsdatasets.utils import CloneProgress, convert_mp3_to_wav
+        from tempfile import TemporaryDirectory
+        from git import Repo
+        from shutil import move
+        from urllib.parse import unquote
+        from os.path import join
+
         target = join(target_folder, "Den2Radio")
         if verbose and not quiet:
             print(f"Downloading Den2Radio to '{target_folder}'")

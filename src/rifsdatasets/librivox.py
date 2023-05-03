@@ -1,16 +1,8 @@
 """
 This module contains the LibriVoxDansk dataset.
 """
-from tempfile import TemporaryDirectory
 
 from rifsdatasets.base import Base
-from rifsdatasets.utils import CloneProgress, convert_mp3_to_wav
-from git import Repo
-from shutil import move
-
-import os
-from os.path import join
-import pandas as pd
 
 
 class LibriVoxDansk(Base):
@@ -37,6 +29,17 @@ class LibriVoxDansk(Base):
         None
 
         """
+        import os
+        from os.path import join
+
+        import pandas as pd
+
+        from rifsdatasets.utils import CloneProgress, convert_mp3_to_wav
+
+        from git import Repo
+        from shutil import move
+        from tempfile import TemporaryDirectory
+
         target = join(target_folder, "LibriVoxDansk")
         if verbose and not quiet:
             print(f"Downloading LibriVoxDansk to '{target_folder}'")

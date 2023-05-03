@@ -1,16 +1,8 @@
 """
 This module contains the Forskerzonen dataset.
 """
-from tempfile import TemporaryDirectory
 
 from rifsdatasets.base import Base
-from rifsdatasets.utils import CloneProgress, convert_mp3_to_wav
-from git import Repo
-from shutil import move
-
-import os
-from os.path import join
-import pandas as pd
 
 
 class Forskerzonen(Base):
@@ -37,6 +29,15 @@ class Forskerzonen(Base):
         None
 
         """
+        from tempfile import TemporaryDirectory
+        from rifsdatasets.utils import CloneProgress, convert_mp3_to_wav
+        from git import Repo
+        from shutil import move
+
+        import os
+        from os.path import join
+        import pandas as pd
+
         target = join(target_folder, "Forskerzonen")
         if verbose and not quiet:
             print(f"Downloading Forskerzonen to '{target_folder}'")

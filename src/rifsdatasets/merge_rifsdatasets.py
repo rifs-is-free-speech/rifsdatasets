@@ -1,10 +1,8 @@
 """
 This module contains the function to merge two datasets.
 """
+
 from typing import List
-import subprocess as sp
-import pandas as pd
-import os
 
 
 def merge_rifsdatasets(
@@ -34,6 +32,10 @@ def merge_rifsdatasets(
     -------
     None
     """
+
+    import subprocess as sp
+    import pandas as pd
+    import os
 
     os.makedirs(trg_dataset, exist_ok=True)
 
