@@ -6,8 +6,9 @@ from rifsdatasets.librivox import LibriVoxDansk
 from rifsdatasets.den2radio import Den2Radio
 from rifsdatasets.forskerzonen import Forskerzonen
 from rifsdatasets.merge_rifsdatasets import merge_rifsdatasets
+from rifsdatasets.split_datasets import split_datasets
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
 all_datasets = {
     "LibriVoxDansk": LibriVoxDansk,
@@ -15,4 +16,4 @@ all_datasets = {
     "Forskerzonen": Forskerzonen,
 }
 
-__all__ = ["all_datasets", "merge_rifsdatasets"]
+__all__ = ["all_datasets", "merge_rifsdatasets", "split_datasets"]
