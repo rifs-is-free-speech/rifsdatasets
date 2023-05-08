@@ -11,7 +11,7 @@ from rifsdatasets.commonvoicedansk import CommonVoiceDansk
 from rifsdatasets.merge_rifsdatasets import merge_rifsdatasets
 from rifsdatasets.split_dataset import split_dataset
 
-__version__ = "0.1.8g"
+__version__ = "0.1.9"
 
 all_datasets = {
     "LibriVoxDansk": LibriVoxDansk,
