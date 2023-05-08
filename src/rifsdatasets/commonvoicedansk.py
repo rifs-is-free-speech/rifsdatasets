@@ -5,7 +5,7 @@ This module contains the Danpass dataset.
 from rifsdatasets.base import Base
 
 
-class DanPASS(Base):
+class CommonVoiceDansk(Base):
     """
     Dataset for the DanPASS dataset.
     """
@@ -37,9 +37,9 @@ class DanPASS(Base):
         import os
         from os.path import join
 
-        target = join(target_folder, "DanPASS")
+        target = join(target_folder, "CommonVoiceDansk")
         if verbose and not quiet:
-            print(f"Downloading DanPASS to '{target_folder}'")
+            print(f"Downloading CommonVoiceDansk to '{target_folder}'")
         if os.path.exists(target):
             if verbose and not quiet:
                 print(
@@ -53,7 +53,7 @@ class DanPASS(Base):
             if verbose and not quiet:
                 print("Created temporary directory", tmpdirname)
             Repo.clone_from(
-                url="git@github.com:rifs-is-free-speech/DanPASS.git",
+                url="git@github.com:rifs-is-free-speech/CommonVoiceDansk.git",
                 to_path=tmpdirname,
                 progress=None if quiet else CloneProgress(),
             )
@@ -64,8 +64,11 @@ class DanPASS(Base):
             if verbose and not quiet:
                 print(f"Created folder '{target}'")
             move(join(tmpdirname, "all.csv"), f"{target}/all.csv")
+            move(join(tmpdirname, "train.csv"), f"{target}/all.csv")
+            move(join(tmpdirname, "dev.csv"), f"{target}/all.csv")
+            move(join(tmpdirname, "test.csv"), f"{target}/all.csv")
             if verbose and not quiet:
-                print(f"Moved all.csv to '{target}'")
+                print(f"Moved csv files to '{target}'")
             move(join(tmpdirname, "text"), f"{target}/text")
             if verbose and not quiet:
                 print(f"Moved text/ to '{target}'")
