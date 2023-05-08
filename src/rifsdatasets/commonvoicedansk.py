@@ -30,7 +30,7 @@ class CommonVoiceDansk(Base):
 
         """
         from tempfile import TemporaryDirectory
-        from rifsdatasets.utils import CloneProgress, convert_mp3_to_wav
+        from rifsdatasets.utils import CloneProgress
         from git import Repo
         from shutil import move
 
@@ -69,9 +69,6 @@ class CommonVoiceDansk(Base):
             move(join(tmpdirname, "test.csv"), f"{target}/all.csv")
             if verbose and not quiet:
                 print(f"Moved csv files to '{target}'")
-            move(join(tmpdirname, "text"), f"{target}/text")
-            if verbose and not quiet:
-                print(f"Moved text/ to '{target}'")
             move(join(tmpdirname, "audio"), f"{target}/audio")
             if verbose and not quiet:
                 print(f"Moved audio/ to '{target}'")
