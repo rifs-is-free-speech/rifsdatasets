@@ -66,9 +66,6 @@ class NSTDanishSpråkbanken(Base):
             move(join(tmpdirname, "all.csv"), f"{target}/all.csv")
             if verbose and not quiet:
                 print(f"Moved all.csv to '{target}'")
-            move(join(tmpdirname, "text"), f"{target}/text")
-            if verbose and not quiet:
-                print(f"Moved text/ to '{target}'")
             move(join(tmpdirname, "audio"), f"{target}/audio")
             if verbose and not quiet:
                 print(f"Moved audio/ to '{target}'")
