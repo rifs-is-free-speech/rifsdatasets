@@ -66,6 +66,9 @@ class DanPASS(Base):
             move(join(tmpdirname, "all.csv"), f"{target}/all.csv")
             if verbose and not quiet:
                 print(f"Moved all.csv to '{target}'")
+            move(join(tmpdirname, "text_cleaning.csv"), f"{target}/text_cleaning.csv")
+            if verbose and not quiet:
+                print(f"Moved text_cleaning.csv to '{target}'")
             move(join(tmpdirname, "text"), f"{target}/text")
             if verbose and not quiet:
                 print(f"Moved text/ to '{target}'")
