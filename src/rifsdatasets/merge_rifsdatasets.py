@@ -53,7 +53,9 @@ def merge_rifsdatasets(
         try:
             csv = pd.read_csv(os.path.join(dataset, "all.csv"))
             if "id" in csv.columns:
-                csv["id"] = csv["id"].apply(lambda x: os.path.join(dataset_name, str(x)))
+                csv["id"] = csv["id"].apply(
+                    lambda x: os.path.join(dataset_name, str(x))
+                )
                 all_csv.append(csv)
             else:
                 if verbose and not quiet:

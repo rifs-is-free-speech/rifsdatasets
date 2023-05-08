@@ -10,13 +10,20 @@ import requests as re
 import zipfile
 import os
 
+
 class FreeSoundOrg(Base):
     """
     Dataset for the FreeSoundOrg noisepacks.
     """
 
     @staticmethod
-    def download(target_folder: str, pack_id: int, name: str = "", verbose: bool = False, quiet: bool = False):
+    def download(
+        target_folder: str,
+        pack_id: int,
+        name: str = "",
+        verbose: bool = False,
+        quiet: bool = False,
+    ):
         """
         Download the dataset to the specified destination.
 
@@ -53,7 +60,9 @@ class FreeSoundOrg(Base):
             response = re.get(f"{base_url}/apiv2/packs/{pack_id}/", headers=headers)
             assert response.status_code == 200, "Could not get pack name"
             name = response.json()["name"]
-            name = "".join([c for c in name.lower() if c.isalnum() or c == " "]).rstrip()
+            name = "".join(
+                [c for c in name.lower() if c.isalnum() or c == " "]
+            ).rstrip()
 
         if verbose and not quiet:
             print(f"Name of soundpack: {name}")
@@ -81,7 +90,9 @@ class FreeSoundOrg(Base):
         if verbose and not quiet:
             print("Getting sounds and splitting dataset")
         sounds = [
-            s for s in os.listdir(os.path.join(target_folder, name, "audio")) if s.endswith(".wav")
+            s
+            for s in os.listdir(os.path.join(target_folder, name, "audio"))
+            if s.endswith(".wav")
         ]
 
         # Split dataset
@@ -102,11 +113,3 @@ class FreeSoundOrg(Base):
 
         if verbose and not quiet:
             print("Done")
-
-
-
-
-
-
-
-
