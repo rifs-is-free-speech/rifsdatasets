@@ -72,3 +72,12 @@ class CommonVoiceDansk(Base):
             move(join(tmpdirname, "audio"), f"{target}/audio")
             if verbose and not quiet:
                 print(f"Moved audio/ to '{target}'")
+
+            if not quiet:
+                print(
+                    """Warning: CommonVoiceDansk is a private dataset. You
+                need to request access to the dataset from the authors. When
+                you have downloaded the data, then place it in the audio
+                folder. We suggest that you read more about the datasets in the
+                documentation."""
+                )
