@@ -42,7 +42,7 @@ def merge_rifsdatasets(
 
     os.makedirs(trg_dataset, exist_ok=True)
 
-    all_csv = []
+    all_csv, train_csv, dev_csv = [], [], []
 
     for dataset in src_dataset:
         dataset_name = os.path.basename(os.path.normpath(dataset))
@@ -50,23 +50,27 @@ def merge_rifsdatasets(
         if verbose and not quiet:
             print(f"Merging {dataset} into {trg_dataset}")
 
-        try:
-            csv = pd.read_csv(os.path.join(dataset, "all.csv"))
-            if "id" in csv.columns:
-                csv["id"] = csv["id"].apply(
-                    lambda x: os.path.join(dataset_name, str(x))
-                )
-                all_csv.append(csv)
-            else:
-                if verbose and not quiet:
-                    print(
-                        f"Dataset {dataset} has no 'id' column. Will only merge files but not csv."
+        for csv_file in ["all.csv", "train.csv", "valid.csv"]:
+            try:
+                csv = pd.read_csv(os.path.join(dataset, csv_file))
+                if "id" in csv.columns:
+                    csv["id"] = csv["id"].apply(
+                        lambda x: os.path.join(dataset_name, str(x))
                     )
-        except FileNotFoundError:
-            if verbose and not quiet:
-                print(
-                    f"Dataset {dataset} has no 'all.csv'. Will only merge files but not csv."
-                )
+                    if csv_file == "all.csv":
+                        all_csv.append(csv)
+                    elif csv_file == "train.csv":
+                        train_csv.append(csv)
+                    elif csv_file == "valid.csv":
+                        dev_csv.append(csv)
+                else:
+                    if verbose and not quiet:
+                        print(
+                            f"Dataset {dataset} has no 'id' column. Will only merge files but not csv."
+                        )
+            except FileNotFoundError:
+                if verbose and not quiet:
+                    print(f"Dataset {dataset} has no '{csv_file}'.")
 
         for dir in specify_dirs:
             dir_target = os.path.join(trg_dataset, dir, dataset_name)
@@ -84,6 +88,18 @@ def merge_rifsdatasets(
         if not quiet:
             print(f"Finished merging '{dataset}' into '{trg_dataset}'\n")
 
+    print("Merging csv files...")
+    print(f"all_csv: {len(all_csv)}")
+    print(f"train_csv: {len(train_csv)}")
+    print(f"dev_csv: {len(dev_csv)}")
+
     if len(all_csv) > 0:
         all_csv = pd.concat(all_csv, ignore_index=True)
         all_csv.to_csv(os.path.join(trg_dataset, "all.csv"), index=False)
+
+    if len(train_csv) > 0 and len(dev_csv) > 0:
+        train_csv = pd.concat(train_csv, ignore_index=True)
+        train_csv.to_csv(os.path.join(trg_dataset, "train.csv"), index=False)
+
+        dev_csv = pd.concat(dev_csv, ignore_index=True)
+        dev_csv.to_csv(os.path.join(trg_dataset, "dev.csv"), index=False)
