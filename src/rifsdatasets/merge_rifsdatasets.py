@@ -74,11 +74,7 @@ def merge_rifsdatasets(
 
             csvdict[split].append(csv)
         allcsv = pd.read_csv(os.path.join(dataset, "all.csv"))
-        allcsv["id"] = allcsv["id"].apply(
-            lambda x: os.path.join(
-                str(x).split("/")[0], dataset_name, "/".join(str(x).split("/")[2:])
-            )
-        )
+        allcsv["id"] = allcsv["id"].apply(lambda x: os.path.join(dataset_name, str(x)))
         csvdict["all.csv"].append(allcsv)
 
         for dir in specify_dirs:
