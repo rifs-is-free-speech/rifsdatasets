@@ -62,7 +62,7 @@ def merge_rifsdatasets(
                     lambda x: os.path.join(
                         str(x).split("/")[0],
                         dataset_name,
-                        "/".join(str(x).split("/")[2:]),
+                        "/".join(str(x).split("/")[1:]),
                     )
                 )
             else:
