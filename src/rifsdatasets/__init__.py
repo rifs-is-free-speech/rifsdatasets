@@ -8,10 +8,11 @@ from rifsdatasets.forskerzonen import Forskerzonen
 from rifsdatasets.danpass import DanPASS
 from rifsdatasets.nstdanishspråkbanken import NSTDanishSpråkbanken
 from rifsdatasets.commonvoicedansk import CommonVoiceDansk
+from rifsdatasets.dansketaler import DanskeTaler
 from rifsdatasets.merge_rifsdatasets import merge_rifsdatasets
 from rifsdatasets.split_dataset import split_dataset
 
-__version__ = "0.1.9"
+__version__ = "0.2.0"
 
 all_datasets = {
     "LibriVoxDansk": LibriVoxDansk,
@@ -20,6 +21,7 @@ all_datasets = {
     "DanPASS": DanPASS,
     "NSTDanishSpråkbanken": NSTDanishSpråkbanken,
     "CommonVoiceDansk": CommonVoiceDansk,
+    "DanskeTaler": DanskeTaler,
 }
 
 __all__ = ["all_datasets", "merge_rifsdatasets", "split_dataset"]
