@@ -12,7 +12,7 @@ from rifsdatasets.dansketaler import DanskeTaler
 from rifsdatasets.merge_rifsdatasets import merge_rifsdatasets
 from rifsdatasets.split_dataset import split_dataset
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 all_datasets = {
     "LibriVoxDansk": LibriVoxDansk,
