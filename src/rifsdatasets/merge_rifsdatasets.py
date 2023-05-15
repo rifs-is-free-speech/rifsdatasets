@@ -42,14 +42,13 @@ def merge_rifsdatasets(
         specify_dirs = ["audio", "text", "alignments"]
 
     os.makedirs(trg_dataset, exist_ok=True)
-
+    csvdict = defaultdict(list)
     for dataset in src_dataset:
         dataset_name = os.path.basename(os.path.normpath(dataset))
 
         if verbose and not quiet:
             print(f"Merging {dataset} into {trg_dataset}")
 
-        csvdict = defaultdict(list)
         for split in ["train.csv", "valid.csv", "test.csv"]:
             try:
                 csv = pd.read_csv(os.path.join(dataset, split))
@@ -94,7 +93,7 @@ def merge_rifsdatasets(
         print("Merging csv files...")
     for split in ["train.csv", "valid.csv", "test.csv"]:
         csv = pd.concat(csvdict[split])
-        csv.shuffle()
+        csv = csv.sample(frac=1).reset_index(drop=True)
         csv.to_csv(os.path.join(trg_dataset, split), index=False)
 
     if not quiet:
@@ -105,4 +104,5 @@ def merge_rifsdatasets(
     allcsv["id"] = allcsv["id"].apply(
         lambda x: os.path.join("/".join(str(x).split("/")[1:]))
     )
+    allcsv = allcsv.sample(frac=1).reset_index(drop=True)
     allcsv.to_csv(os.path.join(trg_dataset, "all.csv"), index=False)
