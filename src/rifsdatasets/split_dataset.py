@@ -164,9 +164,17 @@ def split_dataset(
                 lambda x: join(dirname(relpath(csv_file, dataset_path)), x)
             )
             if check_for_bad_alignments:
+                if verbose and not quiet:
+                    print("Checking for bad alignments and removing them.")
+                assert (
+                    "model_output" in df.columns and "text" in df.columns
+                ), "'model_output' or 'text' column not found in csv file."
                 df = df[
                     df.apply(
-                        lambda x: check_for_good_alignment(x["text"], x["model_output"])
+                        lambda x: check_for_good_alignment(
+                            x["text"], x["model_output"]
+                        ),
+                        axis=1,
                     )
                 ]
             all_segments.append(df)
