@@ -70,8 +70,16 @@ def merge_rifsdatasets(
                     print(
                         f"Dataset {dataset} has no 'id' column. Will only merge files but not csv."
                     )
+                continue
 
             csvdict[split].append(csv)
+        allcsv = pd.read_csv(os.path.join(dataset, "all.csv"))
+        allcsv["id"] = allcsv["id"].apply(
+            lambda x: os.path.join(
+                str(x).split("/")[0], dataset_name, "/".join(str(x).split("/")[2:])
+            )
+        )
+        csvdict["all.csv"].append(allcsv)
 
         for dir in specify_dirs:
             dir_target = os.path.join(trg_dataset, dir, dataset_name)
@@ -98,13 +106,6 @@ def merge_rifsdatasets(
 
     if not quiet:
         print("creating all.csv")
-    allcsv = pd.concat(
-        csvdict["train.csv"] + csvdict["valid.csv"] + csvdict["test.csv"]
-    )
-    allcsv["id"] = allcsv["id"].apply(
-        lambda x: os.path.join(
-            "/".join(str(x).split("/")[2:]).replace(".wav", "").replace(".txt", "")
-        )
-    )
+    allcsv = pd.concat(csvdict["all.csv"])
     allcsv = allcsv.sample(frac=1).reset_index(drop=True)
     allcsv.to_csv(os.path.join(trg_dataset, "all.csv"), index=False)
