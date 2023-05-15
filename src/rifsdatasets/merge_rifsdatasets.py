@@ -62,7 +62,7 @@ def merge_rifsdatasets(
                     lambda x: os.path.join(
                         str(x).split("/")[0],
                         dataset_name,
-                        "/".join(str(x).split("/")[1:]),
+                        "/".join(str(x).split("/")[2:]),
                     )
                 )
             else:
@@ -81,7 +81,7 @@ def merge_rifsdatasets(
             if verbose and not quiet:
                 print(f"Copying {dir} from '{dataset}' to '{trg_dataset}'")
             sp.run(
-                f"cp -r {os.path.join(dataset, dir)} {dir_target}",
+                f"cp -r {os.path.join(dataset, dir)}/* {dir_target}",
                 shell=True,
                 check=True,
             )
@@ -102,7 +102,9 @@ def merge_rifsdatasets(
         csvdict["train.csv"] + csvdict["valid.csv"] + csvdict["test.csv"]
     )
     allcsv["id"] = allcsv["id"].apply(
-        lambda x: os.path.join("/".join(str(x).split("/")[1:]))
+        lambda x: os.path.join(
+            "/".join(str(x).split("/")[2:]).replace(".wav", "").replace(".txt", "")
+        )
     )
     allcsv = allcsv.sample(frac=1).reset_index(drop=True)
     allcsv.to_csv(os.path.join(trg_dataset, "all.csv"), index=False)
