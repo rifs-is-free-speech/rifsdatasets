@@ -17,6 +17,7 @@ def split_dataset(
     split_method: str = "random",
     split_ratio: float = 0.8,
     split_test_ratio: float = 0.5,
+    check_for_bad_alignments: bool = False,
     verbose: bool = False,
     quiet: bool = False,
     seed: int = 0,
@@ -35,6 +36,8 @@ def split_dataset(
         Ratio to split dataset into train and validation / test sets.
     split_test_ratio : float
         Ratio to split between validation and test set. default is 0.5.
+    check_for_bad_alignments : bool
+        Check for bad alignments. Default is False.
     verbose : bool
         Print progress.
     quiet : bool
@@ -53,6 +56,7 @@ def split_dataset(
 
     from glob import glob
     from os.path import join, relpath, dirname
+    from rifsalignment import check_for_good_alignment
 
     assert split_method == "random", "Only random split method implemented."
     if verbose and not quiet:
@@ -159,6 +163,12 @@ def split_dataset(
             df["id"] = df["file"].apply(
                 lambda x: join(dirname(relpath(csv_file, dataset_path)), x)
             )
+            if check_for_bad_alignments:
+                df = df[
+                    df.apply(
+                        lambda x: check_for_good_alignment(x["text"], x["model_output"])
+                    )
+                ]
             all_segments.append(df)
         all_segments = pd.concat(all_segments)
         all_segments.to_csv(join(dataset_path, f"{split_name}.csv"), index=False)
