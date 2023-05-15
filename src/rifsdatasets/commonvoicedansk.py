@@ -64,9 +64,10 @@ class CommonVoiceDansk(Base):
             if verbose and not quiet:
                 print(f"Created folder '{target}'")
             move(join(tmpdirname, "all.csv"), f"{target}/all.csv")
-            move(join(tmpdirname, "train.csv"), f"{target}/all.csv")
-            move(join(tmpdirname, "dev.csv"), f"{target}/all.csv")
-            move(join(tmpdirname, "test.csv"), f"{target}/all.csv")
+            move(join(tmpdirname, "train.csv"), f"{target}/train.csv")
+            move(join(tmpdirname, "dev.csv"), f"{target}/dev.csv")
+            move(join(tmpdirname, "test.csv"), f"{target}/test.csv")
+            move(join(tmpdirname, "cleaning.py"), f"{target}/cleaning.py")
             if verbose and not quiet:
                 print(f"Moved csv files to '{target}'")
             move(join(tmpdirname, "audio"), f"{target}/audio")
