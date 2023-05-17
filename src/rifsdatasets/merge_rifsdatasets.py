@@ -85,7 +85,7 @@ def merge_rifsdatasets(
             if verbose and not quiet:
                 print(f"Copying {dir} from '{dataset}' to '{trg_dataset}'")
             sp.run(
-                f"cp -r {os.path.join(dataset, dir)}/* {dir_target}",
+                f"cp -R {os.path.join(dataset, dir)}/* {dir_target}",
                 shell=True,
                 check=True,
             )
