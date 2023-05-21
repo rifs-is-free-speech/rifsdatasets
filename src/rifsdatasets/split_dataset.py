@@ -159,7 +159,12 @@ def split_dataset(
         for csv_file in csv_files:
             if verbose and not quiet:
                 print(f"Reading segments from '{csv_file}'")
-            df = pd.read_csv(csv_file)
+            try:
+                df = pd.read_csv(csv_file)
+            except pd.errors.EmptyDataError:
+                if verbose and not quiet:
+                    print(f"Empty csv file: {csv_file}")
+                continue
             df["id"] = df["file"].apply(
                 lambda x: join(dirname(relpath(csv_file, dataset_path)), x)
             )
