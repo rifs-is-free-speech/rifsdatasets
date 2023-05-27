@@ -73,9 +73,16 @@ def merge_rifsdatasets(
                 continue
 
             csvdict[split].append(csv)
-        allcsv = pd.read_csv(os.path.join(dataset, "all.csv"))
-        allcsv["id"] = allcsv["id"].apply(lambda x: os.path.join(dataset_name, str(x)))
-        csvdict["all.csv"].append(allcsv)
+        skip_all = False
+        try:
+            allcsv = pd.read_csv(os.path.join(dataset, "all.csv"))
+            allcsv["id"] = allcsv["id"].apply(
+                lambda x: os.path.join(dataset_name, str(x))
+            )
+            csvdict["all.csv"].append(allcsv)
+        except FileNotFoundError:
+            skip_all = True
+            pass
 
         for dir in specify_dirs:
             dir_target = os.path.join(trg_dataset, dir, dataset_name)
@@ -102,6 +109,7 @@ def merge_rifsdatasets(
 
     if not quiet:
         print("creating all.csv")
-    allcsv = pd.concat(csvdict["all.csv"])
-    allcsv = allcsv.sample(frac=1).reset_index(drop=True)
-    allcsv.to_csv(os.path.join(trg_dataset, "all.csv"), index=False)
+    if not skip_all:
+        allcsv = pd.concat(csvdict["all.csv"])
+        allcsv = allcsv.sample(frac=1).reset_index(drop=True)
+        allcsv.to_csv(os.path.join(trg_dataset, "all.csv"), index=False)
